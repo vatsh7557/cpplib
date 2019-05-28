@@ -2,7 +2,85 @@
 #define _queue_h_
 #include <iostream>
 #include <vector>
+//linked list implementation
+struct qnode {
+	int data;
+	qnode * next;
+	qnode(int d) : data {d}, next {nullptr} {}
+};
 
+class queue {
+	qnode * front_;
+	qnode * rear;
+	int items;
+	int limit;
+	qnode * get_node(int d) { return new qnode(d); }
+	public : 
+	queue(int size) : limit { size}, front_ { nullptr},
+		rear { nullptr } , items {0}
+	{}
+
+	bool full() ;
+	bool empty() ;
+	int size();
+	int front();
+	void push(int d);
+	void pop();
+	void print();
+};
+bool queue::full()  {
+	return items >= limit;
+}
+
+bool queue::empty()  {
+	return !items;
+}
+
+int queue::size() {
+	return items;
+}
+
+int queue::front() {
+	if(full()) return -1;
+	return front_->data;
+}
+
+void queue::push(int d) {
+	if(full()) return;
+	if(!rear) {
+		rear = front_ = get_node(d);
+	}
+	else {
+		rear->next = get_node(d);
+		rear = rear->next;
+	}
+	++items;
+}
+
+void queue::pop() {
+	if(empty()) return;
+	if(front_ == rear) {
+		delete front_;
+		front_ = rear = nullptr;
+	}
+	else {
+		qnode * t = front_;
+		front_ = front_->next;
+		delete t;
+	}
+	--items;
+}
+
+void queue::print() {
+	qnode * t = front_;
+	while(t) {
+		std::cout << t->data << " ";
+		t = t->next;
+	}
+	std::cout << std::endl;
+}
+
+//Vector Implementation
 class dqueue {
 	std::vector<int> container; 
 	int front_;
