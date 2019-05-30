@@ -48,8 +48,53 @@ class list {
 	bool empty();
 	void print();
 	void clear();
+	int nth_node_from_end(int n);
+	lnode *  middle_element();
+	void reverse();
+	bool is_palindrome();
 };
 
+bool list::is_palindrome() {
+
+}
+
+lnode * list::middle_element() {
+	if(!root) return nullptr;
+	lnode * slow = root;
+	lnode * fast = root;
+	while(fast->next and fast->next->next) {
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+	return slow;
+}
+
+void list::reverse() {
+	if(!root) return;
+	lnode * t = root->next;
+	root->next = nullptr;
+	while(t) {
+		lnode * l = t;
+		t = t->next;
+		l->next = root;
+		root = l;
+	}
+}
+
+int list::nth_node_from_end(int n) {
+	if(n < 1 or !root) return -1;
+	lnode * t = root;
+	for(int i = 1; i < n; ++i) {
+		t = t->next;
+		if(!t) return -1;
+	}
+	lnode * r = root;
+	while(t->next) {
+		t = t->next;
+		r = r->next;
+	}
+	return r->data;
+}
 
 void list::push_back(int d) {
 	if(!root) root = get_node(d);
